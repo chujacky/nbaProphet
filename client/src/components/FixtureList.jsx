@@ -3,7 +3,7 @@ import FixtureListItem from './FixtureListItem.jsx'
 
 const FixtureList = ({ games }) => {
   return (
-    <div id="fixtures">
+    <div id="fixtureContainer">
       {games.map((fixture) => {
         return <FixtureListItem fixture={fixture} />;
       })}

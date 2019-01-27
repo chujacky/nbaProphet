@@ -30,14 +30,25 @@ span{
   margin-left: 15px;
 }
 
-input{
-  height:30px;
-  width:30px;
+.team{
+  width: 80px;
 }
 
-#fixtures{ 
+input{
+  height:30px;
+  width:50px;
+}
+
+#fixtureContainer{ 
   display:flex;
   flex-direction: column;
   justify-content: stretch;
   align-items: center;
+}
+
+.fixture{
+  display: inline-grid;
+  grid-template-columns: 24% 24% 4% 24% 24%;
+  justify-items: center;
+  width: 30%;
 }
