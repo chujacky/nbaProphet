@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import FixtureList from './FixtureList.jsx'
 
 class App extends React.Component {
   constructor(props) {
@@ -15,6 +16,9 @@ class App extends React.Component {
     axios.get('/get', { crossDomain: true })
       .then((response) => {
         console.log(response.data);
+        this.setState({
+          games: response.data,
+        });
       })
       .catch((err) => {
         if (err) {
@@ -25,10 +29,13 @@ class App extends React.Component {
 
   render() {
     return (
-      <div id="nav">
-        <span id="title">NBA prophet</span>
-        <span>Ranking</span>
-        <span>Predict</span>
+      <div>
+        <div id="nav">
+          <h3 id="title">NBA prophet</h3>
+          <h3>Ranking</h3>
+          <h3>Predict</h3>
+        </div>
+        <FixtureList games={this.state.games} />
       </div>
     );
   }

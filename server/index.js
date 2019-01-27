@@ -15,8 +15,8 @@ app.use(cors());
 app.get('/get', (req, res) => {
   axios.get('http://data.nba.net/prod/v1/20190127/scoreboard.json')
     .then((response) => {
-      console.log(response.data.games);
-      res.status(200).send(response.data.games)
+      // console.log(response.data.games);
+      res.status(200).send(response.data.games);
     })
     .catch((err) => {
       if (err) {
