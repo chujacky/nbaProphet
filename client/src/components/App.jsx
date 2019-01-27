@@ -32,8 +32,8 @@ class App extends React.Component {
       <div>
         <div id="nav">
           <h3 id="title">NBA prophet</h3>
-          <h3>Ranking</h3>
-          <h3>Predict</h3>
+          <h3 class="buttons">Predict</h3>
+          <h3 class="buttons">Ranking</h3>
         </div>
         <FixtureList games={this.state.games} />
       </div>

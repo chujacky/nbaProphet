@@ -4,14 +4,30 @@ span{
   font-family: 'Ubuntu', sans-serif;
 }
 
-h3{
+.buttons{
+  text-align: center; 
   color: white;
+  height:60px;
+  margin: 0;
+  line-height: 60px;
+}
+
+.buttons:hover{
+  background-color: grey;
+  cursor: pointer;
 }
 
 #nav{
   background-color: blue;
+  width: 100%;
+  display: inline-grid;
+  grid-template-columns: 85% 7.5% 7.5%;
   margin: 0;
-  width:100%;
+}
+
+#title{
+  color:red;
+  margin-left: 15px;
 }
 
 input{
