@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 class App extends React.Component {
   constructor(props) {
@@ -8,6 +9,18 @@ class App extends React.Component {
       ranking: false,
       games: [],
     };
+  }
+
+  componentDidMount() {
+    axios.get('/get', { crossDomain: true })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((err) => {
+        if (err) {
+          throw err;
+        }
+      });
   }
 
   render() {
