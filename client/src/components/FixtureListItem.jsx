@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 const FixtureListItem = ({ fixture, predict }) => {
   return (
     <div className="fixture">
-      <span className="teams">{fixture.hTeam.triCode}</span>
-      <input type="number" name="hScore" className={fixture.gameId} onChange={e => predict(e)} />
+      <span className="teams">{fixture.hTeam}</span>
+      <input type="number" name="hScore" className={fixture.game_id} onChange={e => predict(e)} />
       <span>:</span>
-      <input type="number" name="vScore" className={fixture.gameId} onChange={e => predict(e)} />
-      <span className="teams">{fixture.vTeam.triCode}</span>
+      <input type="number" name="vScore" className={fixture.game_id} onChange={e => predict(e)} />
+      <span className="teams">{fixture.vTeam}</span>
     </div>
   );
 };

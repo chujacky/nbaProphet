@@ -15,7 +15,7 @@ class App extends React.Component {
   componentDidMount() {
     axios.get('/get', { crossDomain: true })
       .then((response) => {
-        // console.log(response.data);
+        console.log(response.data);
         this.setState({
           games: response.data,
         });

@@ -52,7 +52,7 @@ class FixtureList extends React.Component {
     return (
       <div id="fixtureContainer">
         {games.map((fixture) => {
-          return <FixtureListItem fixture={fixture} key={fixture.gameId} predict={this.onPredict} />;
+          return <FixtureListItem fixture={fixture} key={fixture.game_id} predict={this.onPredict} />;
         })}
         <button type="button" onClick={this.onSubmit}>Predict!</button>
       </div>
