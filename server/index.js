@@ -7,6 +7,7 @@ const schedule = require('node-schedule');
 const db = require('./db/db');
 const predictions = require('./db/controllers/predictions');
 const fixtures = require('./db/controllers/fixtures');
+const moment = require('moment');
 
 const rule = new schedule.RecurrenceRule();
 const port = 3000;
@@ -16,13 +17,15 @@ app.use(express.static(path.join(__dirname, '../client/dist')));
 app.use(bodyParser.json());
 app.use(cors());
 
-rule.hour = 17;
-rule.minute = 55;
+
+rule.hour = 0;
+rule.minute = 0;
 schedule.scheduleJob(rule, () => {
-  axios.get('http://data.nba.net/prod/v1/20190127/scoreboard.json')
+  const day = moment().format('YYYYMMDD');
+  axios.get(`http://data.nba.net/prod/v1/${day}/scoreboard.json`)
     .then((response) => {
-      // console.log(response.data.games);
-      fixtures.create(response.data.games);
+      console.log(response.data.games);
+      // fixtures.create(response.data.games);
     })
     .catch((err) => {
       if (err) {

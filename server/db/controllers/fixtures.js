@@ -5,8 +5,8 @@ const create = (data) => {
   const fixtures = data.map((fixture) => {
     const gameInfo = {
       game_id: fixture.gameId,
-      hTeam: fixture.hTeam.triCode,
-      vTeam: fixture.vTeam.triCode,
+      hTeam: fixture.hTeam,
+      vTeam: fixture.vTeam,
     };
     return gameInfo;
   });

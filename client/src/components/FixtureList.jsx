@@ -21,7 +21,7 @@ class FixtureList extends React.Component {
     if (!predictions[game_id]) {
       predictions[game_id] = {
         game_id,
-        user: Date.now(),
+        user: 'Dickson',
       };
     }
     if (score === 'hScore') {
