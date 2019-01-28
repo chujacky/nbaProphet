@@ -3,8 +3,10 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const axios = require('axios');
+const schedule = require('node-schedule');
+const rule = new schedule.RecurrenceRule();
 const db = require('./db/db');
-const { create } = require('./db/controllers/predictions')
+const { create } = require('./db/controllers/predictions');
 
 const port = 3000;
 
@@ -14,6 +16,20 @@ const app = express();
 app.use(express.static(path.join(__dirname, '../client/dist')));
 app.use(bodyParser.json());
 app.use(cors());
+
+rule.hour = 0;
+rule.minute = 0;
+schedule.scheduleJob(rule, () => {
+  axios.get('http://data.nba.net/prod/v1/20190127/scoreboard.json')
+    .then((response) => {
+      console.log(response.data.games);
+    })
+    .catch((err) => {
+      if (err) {
+        throw err;
+      }
+    });
+});
 
 app.get('/get', (req, res) => {
   axios.get('http://data.nba.net/prod/v1/20190127/scoreboard.json')
