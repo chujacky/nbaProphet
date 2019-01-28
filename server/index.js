@@ -4,25 +4,25 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const axios = require('axios');
 const schedule = require('node-schedule');
-const rule = new schedule.RecurrenceRule();
 const db = require('./db/db');
-const { create } = require('./db/controllers/predictions');
+const predictions = require('./db/controllers/predictions');
+const fixtures = require('./db/controllers/fixtures');
 
+const rule = new schedule.RecurrenceRule();
 const port = 3000;
-
 const app = express();
-
 
 app.use(express.static(path.join(__dirname, '../client/dist')));
 app.use(bodyParser.json());
 app.use(cors());
 
-rule.hour = 0;
-rule.minute = 0;
+rule.hour = 17;
+rule.minute = 55;
 schedule.scheduleJob(rule, () => {
   axios.get('http://data.nba.net/prod/v1/20190127/scoreboard.json')
     .then((response) => {
-      console.log(response.data.games);
+      // console.log(response.data.games);
+      fixtures.create(response.data.games);
     })
     .catch((err) => {
       if (err) {
@@ -32,21 +32,22 @@ schedule.scheduleJob(rule, () => {
 });
 
 app.get('/get', (req, res) => {
-  axios.get('http://data.nba.net/prod/v1/20190127/scoreboard.json')
-    .then((response) => {
-      // console.log(response.data.games);
-      res.status(200).send(response.data.games);
-    })
-    .catch((err) => {
-      if (err) {
-        throw err;
-      }
-    });
+  // axios.get('http://data.nba.net/prod/v1/20190127/scoreboard.json')
+  //   .then((response) => {
+  //     // console.log(response.data.games);
+  //     res.status(200).send(response.data.games);
+  //   })
+  //   .catch((err) => {
+  //     if (err) {
+  //       throw err;
+  //     }
+  //   });
+  fixtures.read(req, res);
 });
 
 app.post('/predictions', (req, res) => {
   console.log(req.body);
-  create(req, res);
-})
+  predictions.create(req, res);
+});
 
 app.listen(port, () => console.log(`score prophet listening on port ${port}`))

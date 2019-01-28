@@ -6,7 +6,7 @@ const create = (req, res) => {
   for (var id in predictions) {
     data.push(predictions[id]);
   }
-  // console.log(data);
+  console.log(data);
   Prediction.insertMany(data, (err) => {
     if (err) {
       console.log(err);
