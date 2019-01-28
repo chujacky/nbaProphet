@@ -25,4 +25,8 @@ app.get('/get', (req, res) => {
     });
 });
 
+app.post('/predictions', (req, res) => {
+  console.log(req.body);
+})
+
 app.listen(port, () => console.log(`score prophet listening on port ${port}`))

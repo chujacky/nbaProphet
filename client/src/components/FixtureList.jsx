@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import FixtureListItem from './FixtureListItem.jsx'
 
 class FixtureList extends React.Component {
@@ -9,6 +10,7 @@ class FixtureList extends React.Component {
       predictions: {},
     };
     this.onPredict = this.onPredict.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   onPredict(e) {
@@ -31,6 +33,19 @@ class FixtureList extends React.Component {
     }, console.log(this.state));
   }
 
+  onSubmit() {
+    const predictions = this.state;
+    axios.post('/predictions', predictions)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        if (err) {
+          throw err;
+        }
+      })
+  }
+
   render() {
     const { games } = this.props;
     return (
@@ -38,7 +53,7 @@ class FixtureList extends React.Component {
         {games.map((fixture) => {
           return <FixtureListItem fixture={fixture} key={fixture.gameId} predict={this.onPredict} />;
         })}
-        <button type="button">Predict!</button>
+        <button type="button" onClick={this.onSubmit}>Predict!</button>
       </div>
     );
   }
