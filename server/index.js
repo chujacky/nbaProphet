@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const axios = require('axios');
 const db = require('./db/db');
+const { create } = require('./db/controllers/predictions')
 
 const port = 3000;
 
@@ -29,6 +30,7 @@ app.get('/get', (req, res) => {
 
 app.post('/predictions', (req, res) => {
   console.log(req.body);
+  create(req, res);
 })
 
 app.listen(port, () => console.log(`score prophet listening on port ${port}`))

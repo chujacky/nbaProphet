@@ -14,19 +14,20 @@ class FixtureList extends React.Component {
   }
 
   onPredict(e) {
-    const gameId = e.target.className;
+    const game_id = e.target.className;
     const score = e.target.name;
     const value = e.target.value;
     const { predictions } = this.state;
-    if (!predictions[gameId]) {
-      predictions[gameId] = {
-        gameId,
+    if (!predictions[game_id]) {
+      predictions[game_id] = {
+        game_id,
+        user: Date.now(),
       };
     }
     if (score === 'hScore') {
-      predictions[gameId].hScore = value;
+      predictions[game_id].hScore = value;
     } else {
-      predictions[gameId].vScore = value;
+      predictions[game_id].vScore = value;
     }
     this.setState({
       predictions,
