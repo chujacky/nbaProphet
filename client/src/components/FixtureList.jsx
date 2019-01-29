@@ -7,35 +7,57 @@ class FixtureList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      user: '',
       predictions: {},
     };
     this.onPredict = this.onPredict.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.addUser = this.addUser.bind(this);
+  }
+
+  addUser(e) {
+    const user = e.target.value;
+    this.setState({
+      user,
+    })
   }
 
   onPredict(e) {
     const game_id = e.target.className;
+    const team = e.target.id;
     const score = e.target.name;
     const value = e.target.value;
-    const { predictions } = this.state;
+    const { predictions, user } = this.state;
     if (!predictions[game_id]) {
       predictions[game_id] = {
         game_id,
-        user: 'Dickson',
+        user,
       };
     }
     if (score === 'hScore') {
+      predictions[game_id].hTeam = team;
       predictions[game_id].hScore = value;
     } else {
+      predictions[game_id].vTeam = team;
       predictions[game_id].vScore = value;
     }
     this.setState({
       predictions,
-    }, console.log(this.state));
+    });
   }
 
-  onSubmit() {
-    const predictions = this.state;
+  onSubmit(e) {
+    e.preventDefault();
+    const { predictions } = this.state; 
+    console.log(predictions);
+    for (var game in predictions) {
+      console.log(predictions[game]);
+      if (predictions[game].hScore > predictions[game].vScore) {
+        predictions[game].winner = predictions[game].hTeam;
+      } else {
+        predictions[game].winner = predictions[game].vTeam;
+      }
+    }
     axios.post('/predictions', predictions)
       .then((response) => {
         console.log(response);
@@ -44,18 +66,28 @@ class FixtureList extends React.Component {
         if (err) {
           throw err;
         }
-      })
+      });
+    this.setState({
+      user: '',
+      predictions: {},
+    });
   }
 
   render() {
     const { games } = this.props;
     return (
-      <div id="fixtureContainer">
-        {games.map((fixture) => {
-          return <FixtureListItem fixture={fixture} key={fixture.game_id} predict={this.onPredict} />;
-        })}
-        <button type="button" onClick={this.onSubmit}>Predict!</button>
-      </div>
+      <form onSubmit={e => this.onSubmit(e)}>
+        <div>
+          <label>User: </label>
+          <input id="user" type="text" required onChange={e => this.addUser(e)} />
+        </div>
+        <div id="fixtureContainer">
+          {games.map((fixture) => {
+            return <FixtureListItem fixture={fixture} key={fixture.game_id} predict={this.onPredict} />;
+          })}
+        </div>
+        <button type="submit">Predict!</button>
+      </form>
     );
   }
 };
