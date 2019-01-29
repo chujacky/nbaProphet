@@ -26,7 +26,7 @@ class FixtureList extends React.Component {
     const game_id = e.target.className;
     const team = e.target.id;
     const score = e.target.name;
-    const value = e.target.value;
+    const value = Number(e.target.value);
     const { predictions, user } = this.state;
     if (!predictions[game_id]) {
       predictions[game_id] = {
@@ -67,6 +67,7 @@ class FixtureList extends React.Component {
           throw err;
         }
       });
+    e.target.reset();
     this.setState({
       user: '',
       predictions: {},
@@ -77,7 +78,7 @@ class FixtureList extends React.Component {
     const { games } = this.props;
     return (
       <form onSubmit={e => this.onSubmit(e)}>
-        <div>
+        <div id="userContainer">
           <label>User: </label>
           <input id="user" type="text" required onChange={e => this.addUser(e)} />
         </div>
