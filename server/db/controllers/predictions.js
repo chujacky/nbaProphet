@@ -2,11 +2,11 @@ const Prediction = require('../model/predictions');
 
 const create = (req, res) => {
   const data = [];
-  const { predictions } = req.body;
+  const predictions = req.body;
   for (var id in predictions) {
     data.push(predictions[id]);
   }
-  console.log(data);
+  // console.log(data);
   Prediction.insertMany(data, (err) => {
     if (err) {
       console.log(err);

@@ -3,15 +3,16 @@ const Result = require('../model/results');
 const create = (gameResults, cb) => {
   const results = gameResults.map((result) => {
     const gameInfo = {
-      game_id: result.gameId,
+      game_id: Number(result.gameId),
       hTeam: result.hTeam.triCode,
-      hScore: result.hTeam.score,
+      hScore: Number(result.hTeam.score),
       vTeam: result.vTeam.triCode,
-      vScore: result.vTeam.score,
-      winner: result.hTeam.score > result.vTeam.score ? result.hTeam.triCode : result.vTeam.triCode,
+      vScore: Number(result.vTeam.score),
+      winner: Number(result.hTeam.score) > Number(result.vTeam.score) ? result.hTeam.triCode : result.vTeam.triCode,
     };
     return gameInfo;
   });
+  // console.log(results);
   Result.insertMany(results, (err, response) => {
     if (err) {
       console.log(err);

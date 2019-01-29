@@ -4,7 +4,7 @@ const create = (data) => {
   console.log(data);
   const fixtures = data.map((fixture) => {
     const gameInfo = {
-      game_id: fixture.gameId,
+      game_id: Number(fixture.gameId),
       hTeam: fixture.hTeam,
       vTeam: fixture.vTeam,
     };
