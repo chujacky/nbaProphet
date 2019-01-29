@@ -7,11 +7,13 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      predict: true,
-      ranking: false,
+      predictPage: true,
+      standingsPage: false,
       games: [],
       standings: [],
     };
+    this.onPredictClick = this.onPredictClick.bind(this);
+    this.onStandingsClick = this.onStandingsClick.bind(this);
   }
 
   componentDidMount() {
@@ -41,16 +43,36 @@ class App extends React.Component {
       });
   }
 
+  onPredictClick() {
+    this.setState({
+      predictPage: true,
+      standingsPage: false,
+    });
+  }
+
+  onStandingsClick() {
+    this.setState({
+      predictPage: false,
+      standingsPage: true,
+    });
+  }
+
   render() {
+    const standingsDisplay = {
+      display: this.state.standingsPage ? 'flex' : 'none',
+    };
+    const predictDisplay = {
+      display: this.state.predictPage ? 'flex' : 'none',
+    };
     return (
       <div>
         <div id="nav">
           <h3 id="title">NBA prophet</h3>
-          <h3 className="buttons">Predict</h3>
-          <h3 className="buttons">Standings</h3>
+          <h3 className="buttons" onClick={this.onPredictClick} >Predict</h3>
+          <h3 className="buttons" onClick={this.onStandingsClick} >Standings</h3>
         </div>
-        <FixtureList games={this.state.games} />
-        <Standings standings={this.state.standings} />
+        <FixtureList games={this.state.games} styles={predictDisplay} />
+        <Standings standings={this.state.standings} styles={standingsDisplay} />
       </div>
     );
   }

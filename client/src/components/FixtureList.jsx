@@ -75,9 +75,9 @@ class FixtureList extends React.Component {
   }
 
   render() {
-    const { games } = this.props;
+    const { games, styles } = this.props;
     return (
-      <form onSubmit={e => this.onSubmit(e)}>
+      <form onSubmit={e => this.onSubmit(e)} style={styles}>
         <div id="userContainer">
           <label>User: </label>
           <input id="user" type="text" required onChange={e => this.addUser(e)} />
@@ -97,4 +97,5 @@ export default FixtureList;
 
 FixtureList.propTypes = {
   games: PropTypes.array,
+  styles: PropTypes.object,
 };

@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Standings = ({ standings }) => {
+const Standings = (props) => {
+  const { standings, styles } = props;
   return (
-    <div id="standingContainer">
+    <div id="standingContainer" style={styles}>
+      <h2>Standings</h2>
       <div className="standingTable">
         <span>Rank</span>
         <span>User</span>
@@ -28,4 +30,5 @@ export default Standings;
 
 Standings.propTypes = {
   standings: PropTypes.array,
+  styles: PropTypes.object,
 };
