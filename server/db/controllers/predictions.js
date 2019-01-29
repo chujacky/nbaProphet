@@ -15,6 +15,15 @@ const create = (req, res) => {
   });
 };
 
+const deleteAll = () => {
+  Prediction.deleteMany()
+    .then()
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 module.exports = {
   create,
+  deleteAll,
 };

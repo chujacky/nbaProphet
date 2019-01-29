@@ -1,6 +1,7 @@
 const Result = require('../model/results');
 
 const create = (gameResults, cb) => {
+  // console.log('hi');
   const results = gameResults.map((result) => {
     const gameInfo = {
       game_id: Number(result.gameId),
@@ -17,10 +18,20 @@ const create = (gameResults, cb) => {
     if (err) {
       console.log(err);
     }
+    console.log(response);
     cb(response);
   });
 };
 
+const deleteAll = () => {
+  Result.deleteMany()
+    .then()
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 module.exports = {
   create,
+  deleteAll,
 };
