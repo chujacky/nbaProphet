@@ -15,13 +15,6 @@ class FixtureList extends React.Component {
     this.addUser = this.addUser.bind(this);
   }
 
-  addUser(e) {
-    const user = e.target.value;
-    this.setState({
-      user,
-    })
-  }
-
   onPredict(e) {
     const game_id = e.target.className;
     const team = e.target.id;
@@ -74,17 +67,34 @@ class FixtureList extends React.Component {
     });
   }
 
+  addUser(e) {
+    const game_id = e.target.className;
+    const { predictions } = this.state; 
+    const user = e.target.value;
+    this.setState({
+      user,
+    })
+    if (!predictions[game_id]) {
+      predictions[game_id] = {
+        game_id,
+        user,
+      };
+    }
+  }
+
   render() {
-    const { games, styles } = this.props;
+    const { games, styles, teams } = this.props;
     return (
       <form onSubmit={e => this.onSubmit(e)} style={styles}>
+        <p>Predict the nba scores for today&apos;s game! <br></br> 10 points for predicting the correct winner
+        <br></br>5 bonus points if guess is within +/- 5 of actual scores (each team)</p>
         <div id="userContainer">
           <label>User: </label>
           <input id="user" type="text" required onChange={e => this.addUser(e)} />
         </div>
         <div id="fixtureContainer">
           {games.map((fixture) => {
-            return <FixtureListItem fixture={fixture} key={fixture.game_id} predict={this.onPredict} />;
+            return <FixtureListItem fixture={fixture} teams={teams} key={fixture.game_id} predict={this.onPredict} />;
           })}
         </div>
         <button type="submit">Predict!</button>

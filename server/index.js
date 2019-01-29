@@ -10,6 +10,8 @@ const predictions = require('./db/controllers/predictions');
 const fixtures = require('./db/controllers/fixtures');
 const results = require('./db/controllers/results');
 const rankings = require('./db/controllers/rankings');
+const teams = require('./db/controllers/teams');
+const Team = require('./db/model/teams');
 
 const rule = new schedule.RecurrenceRule();
 const truncate = new schedule.RecurrenceRule();
@@ -24,7 +26,6 @@ truncate.hour = 23;
 truncate.minute = 55;
 
 schedule.scheduleJob(truncate, () => {
-  console.log('hi')
   fixtures.deleteAll();
   results.deleteAll();
   rankings.deleteAll();
@@ -59,12 +60,39 @@ schedule.scheduleJob(rule, () => {
     });
 });
 
+Team.find({}, (err, results) => {
+  if (err) {
+    console.log(err);
+  }
+  if (!results.length) {
+    axios.get('https://www.thesportsdb.com/api/v1/json/1/search_all_teams.php?l=NBA')
+      .then((response) => {
+        const teamsInfo = response.data.teams.map((team) => {
+          const info = {
+            name: team.strTeam,
+            triCode: team.strTeamShort,
+            logo: team.strTeamBadge,
+          };
+          return info;
+        });
+        teams.create(teamsInfo);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+});
+
 app.get('/getfixtures', (req, res) => {
   fixtures.read(req, res);
 });
 
 app.get('/getstandings', (req, res) => {
   rankings.read(req, res);
+});
+
+app.get('/getteams', (req, res) => {
+  teams.read(req, res);
 });
 
 app.post('/predictions', (req, res) => {

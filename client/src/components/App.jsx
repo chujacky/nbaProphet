@@ -11,6 +11,7 @@ class App extends React.Component {
       standingsPage: false,
       games: [],
       standings: [],
+      teams: [],
     };
     this.onPredictClick = this.onPredictClick.bind(this);
     this.onStandingsClick = this.onStandingsClick.bind(this);
@@ -31,9 +32,24 @@ class App extends React.Component {
       });
     axios.get('/getstandings', { crossDomain: true })
       .then((response) => {
-        console.log(response.data);
         this.setState({
           standings: response.data,
+        });
+      })
+      .catch((err) => {
+        if (err) {
+          throw err;
+        }
+      });
+    axios.get('/getteams', { crossDomain: true })
+      .then((response) => {
+        const teamsInfo = {};
+        response.data.forEach((team) => {
+          teamsInfo[team.triCode] = team;
+        });
+        console.log(teamsInfo);
+        this.setState({
+          teams: teamsInfo,
         });
       })
       .catch((err) => {
@@ -67,11 +83,12 @@ class App extends React.Component {
     return (
       <div>
         <div id="nav">
+          <img src="https://theundefeated.com/wp-content/uploads/2017/06/shaq_v2.png" alt="" height="100%"/>
           <h3 id="title">NBA prophet</h3>
           <h3 className="buttons" onClick={this.onPredictClick} >Predict</h3>
           <h3 className="buttons" onClick={this.onStandingsClick} >Standings</h3>
         </div>
-        <FixtureList games={this.state.games} styles={predictDisplay} />
+        <FixtureList games={this.state.games} teams={this.state.teams} styles={predictDisplay} />
         <Standings standings={this.state.standings} styles={standingsDisplay} />
       </div>
     );
