@@ -1,3 +1,4 @@
+const Promise = require('bluebird');
 const axios = require('axios');
 const moment = require('moment');
 const Ranking = require('../model/rankings');
@@ -27,29 +28,42 @@ const createUsersInfo = (cb) => {
 const create = (cb) => {  
   createUsersInfo((usersInfo, userIndex) => {
     Result.find({}).sort({ game_id: 1 })
-      .then(async (results) => {
-          for (let i = 0; i < results.length; i += 1) {
-            await Prediction.find({game_id: results[i].game_id})
-              .then((predictions) => {
-                predictions.forEach((prediction) => {
-                  if (results[i].winner === prediction.winner) {
-                    const { user } = prediction;
-                    usersInfo[userIndex[user]].points += 10;
-                    usersInfo[userIndex[user]].accuracy += 1;
-                  }
-                  if (Math.abs(results[i].hScore - prediction.hScore) <= 5 || Math.abs(results[i].vScore - prediction.vScore) <= 5) {
-                    const { user } = prediction;
-                    usersInfo[userIndex[user]].points += 5;
-                  }
-                })
-              })
+      .then((results) => {
+        Prediction.find({}, (err, predictions) => {
+          if (err) {
+            console.log(err);
+          }
+          const prediction = {};
+          predictions.forEach((predict) => {
+            if (!prediction[predict.game_id]) {
+              prediction[predict.game_id] = [predict];
+            } else {
+              prediction[predict.game_id].push(predict);
             }
-        console.log(usersInfo);
-        return Ranking.insertMany(usersInfo);
-      })
-      .then((rankings) => {
-        console.log(rankings);
-        cb();
+          });
+          for (let i = 0; i < results.length; i += 1) {
+            if (prediction[results[i].game_id]) {
+              prediction[results[i].game_id].forEach((predict) => {
+                if (results[i].winner === predict.winner) {
+                  const { user } = predict;
+                  usersInfo[userIndex[user]].points += 10;
+                  usersInfo[userIndex[user]].accuracy += 1;
+                }
+                if (Math.abs(results[i].hScore - predict.hScore) <= 5 || Math.abs(results[i].vScore - predict.vScore) <= 5) {
+                  const { user } = predict;
+                  usersInfo[userIndex[user]].points += 5;
+                }
+              });
+            }
+          }
+          console.log(usersInfo);
+          Ranking.insertMany(usersInfo, (err) =>{
+            if (err) {
+              console.log(err);
+            }
+            cb();
+          });
+        });
       })
       .catch((err) => {
         if (err) {
@@ -100,24 +114,3 @@ module.exports = {
   read,
   deleteAll,
 };
-
-
-// Prediction.find({ user }, (err, predictions) => {
-//   if (err) {
-//     console.log(err);
-//   }
-//   predictions.forEach((prediction) => {
-//     const { game_id, winner } = prediction;
-//     console.log(winner);
-//     Result.find({game_id}, (err, guess) => {
-//       if (err) {
-//         console.log(err);
-//       }
-//       if (winner === guess[0].winner) {
-//         console.log(`${guess[0].winner} correct`, user);
-//         userInfo.points += 10;
-//         userInfo.accuracy += 1;
-//       }
-//     });
-//   });
-// });

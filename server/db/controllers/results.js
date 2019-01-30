@@ -18,7 +18,6 @@ const create = (gameResults, cb) => {
     if (err) {
       console.log(err);
     }
-    console.log(response);
     cb(response);
   });
 };
