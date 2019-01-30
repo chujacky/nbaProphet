@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import FixtureListItem from './FixtureListItem.jsx'
+import moment from 'moment';
+import FixtureListItem from './FixtureListItem.jsx';
+import ScoreListItem from './ScoreListItem.jsx';
 
 class FixtureList extends React.Component {
   constructor(props) {
@@ -83,7 +85,7 @@ class FixtureList extends React.Component {
   }
 
   render() {
-    const { games, styles, teams } = this.props;
+    const { games, styles, teams, results } = this.props;
     return (
       <form onSubmit={e => this.onSubmit(e)} style={styles}>
         <p>Predict the nba scores for today&apos;s game! <br></br> 10 points for predicting the correct winner
@@ -98,6 +100,12 @@ class FixtureList extends React.Component {
           })}
         </div>
         <button type="submit">Predict!</button>
+        <h2 id="resultsDate">{moment().subtract(1, 'days').format("MMM Do YYYY")} Scores</h2>
+        <div id="resultContainer">
+          {results.map((result) => {
+            return <ScoreListItem result={result} teams={teams} />
+          })}
+        </div>
       </form>
     );
   }
@@ -108,4 +116,5 @@ export default FixtureList;
 FixtureList.propTypes = {
   games: PropTypes.array,
   styles: PropTypes.object,
+  teams: PropTypes.object,
 };

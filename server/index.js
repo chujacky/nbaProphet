@@ -95,6 +95,10 @@ app.get('/getteams', (req, res) => {
   teams.read(req, res);
 });
 
+app.get('/getresults', (req, res) => {
+  results.read(req, res);
+});
+
 app.post('/predictions', (req, res) => {
   // console.log(req.body);
   predictions.create(req, res);

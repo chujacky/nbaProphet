@@ -11,7 +11,8 @@ class App extends React.Component {
       standingsPage: false,
       games: [],
       standings: [],
-      teams: [],
+      teams: {},
+      results: [],
     };
     this.onPredictClick = this.onPredictClick.bind(this);
     this.onStandingsClick = this.onStandingsClick.bind(this);
@@ -47,9 +48,21 @@ class App extends React.Component {
         response.data.forEach((team) => {
           teamsInfo[team.triCode] = team;
         });
-        console.log(teamsInfo);
+        // console.log(teamsInfo);
         this.setState({
           teams: teamsInfo,
+        });
+      })
+      .catch((err) => {
+        if (err) {
+          throw err;
+        }
+      });
+    axios.get('/getresults', { crossDomain: true })
+      .then((response) => {
+        console.log(response.data);
+        this.setState({
+          results: response.data,
         });
       })
       .catch((err) => {
@@ -88,7 +101,7 @@ class App extends React.Component {
           <h3 className="buttons" onClick={this.onPredictClick} >Predict</h3>
           <h3 className="buttons" onClick={this.onStandingsClick} >Standings</h3>
         </div>
-        <FixtureList games={this.state.games} teams={this.state.teams} styles={predictDisplay} />
+        <FixtureList games={this.state.games} teams={this.state.teams} styles={predictDisplay} results={this.state.results} />
         <Standings standings={this.state.standings} styles={standingsDisplay} />
       </div>
     );

@@ -23,6 +23,15 @@ const create = (gameResults, cb) => {
   });
 };
 
+const read = (req, res) => {
+  Result.find({}, (err, results) => {
+    if (err) {
+      console.log(err);
+    }
+    res.status(200).send(results);
+  });
+};
+
 const deleteAll = () => {
   Result.deleteMany()
     .then()
@@ -34,4 +43,5 @@ const deleteAll = () => {
 module.exports = {
   create,
   deleteAll,
+  read,
 };

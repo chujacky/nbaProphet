@@ -25,7 +25,7 @@ span{
   background-color: #3079ED;
   width: 101%;
   display: inline-grid;
-  grid-template-columns: 1% 83% 7.5% 7.5%;
+  grid-template-columns: 1% 84% 7.5% 7.5%;
   margin: -5px;
 }
 
@@ -69,6 +69,21 @@ input::-webkit-inner-spin-button {
   flex-direction: column;
   justify-content: stretch;
   align-items: center;
+}
+
+#resultContainer{ 
+  display:flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: center;
+}
+
+.result{
+  display: inline-grid;
+  grid-template-columns: 12% 20% 20% 4% 20% 20% 12%;
+  justify-items: center;
+  width: 400px;
+  margin: 5px 0;
 }
 
 .fixture{
