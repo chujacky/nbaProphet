@@ -104,4 +104,4 @@ app.post('/predictions', (req, res) => {
   predictions.create(req, res);
 });
 
-app.listen(port, () => console.log(`score prophet listening on port ${port}`))
+app.listen(process.env.PORT || port, () => console.log(`score prophet listening on port ${port}`))

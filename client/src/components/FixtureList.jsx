@@ -100,7 +100,7 @@ class FixtureList extends React.Component {
           })}
         </div>
         <button type="submit">Predict!</button>
-        <h2 id="resultsDate">{moment().subtract(1, 'days').format("MMM Do YYYY")} Scores</h2>
+        <h2 id="resultsDate">Yesterday&apos;s Final Scores</h2>
         <div id="resultContainer">
           {results.map((result) => {
             return <ScoreListItem result={result} teams={teams} />
